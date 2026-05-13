@@ -31,9 +31,14 @@ TELEGRAM_CHAT_ID=123456789
 
 ## Перед хостингом
 
-У репозиторії вже є SVG-зображення карток у `public/assets`, тому Railway може деплоїти сайт без локальних файлів із комп'ютера.
+У репозиторії вже є реальні фото карток у `public/assets`, тому Railway може деплоїти сайт без локальних файлів із комп'ютера.
 
-Якщо потрібно замінити SVG на реальні фото, покладіть файли в `public/assets` і оновіть шляхи в `server.js` та `public/index.html`.
+Використовуються фото:
+
+- `naruto-front.jpg`, `naruto-back.jpg`
+- `gojo-front.png`, `gojo-back.png`
+- `luffy-front.png`, `luffy-back.png`
+- `all-cards.jpg`, `naruto-back-alt.jpg` як додаткові ассети
 
 Файл `.env` не потрібно завантажувати в GitHub або на хостинг. На хостингу ці значення додаються як Environment Variables.
 
