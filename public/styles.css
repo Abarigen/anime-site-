@@ -186,8 +186,10 @@ h3 {
 .hero-card {
   position: absolute;
   width: min(48vw, 450px);
+  height: min(30.4vw, 285px);
   aspect-ratio: 1.58;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center 70%;
   border-radius: 14px;
   border: 1px solid rgba(17, 19, 24, 0.12);
   box-shadow: 0 30px 70px rgba(17, 19, 24, 0.18);
@@ -257,8 +259,10 @@ h3 {
 
 .product-images img {
   width: 100%;
+  height: clamp(150px, 12vw, 210px);
   aspect-ratio: 1.58;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center 70%;
   border-radius: 6px;
   background: var(--white);
 }
@@ -391,6 +395,7 @@ select:focus {
 
   .hero-card {
     width: min(82vw, 340px);
+    height: min(51.9vw, 215px);
   }
 
   .hero-card-center {
@@ -404,6 +409,10 @@ select:focus {
 
   .product-images {
     grid-template-columns: 1fr;
+  }
+
+  .product-images img {
+    height: min(52vw, 260px);
   }
 
   .order-form {
