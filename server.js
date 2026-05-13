@@ -15,16 +15,12 @@ function imagePath(assetName, localName) {
 }
 
 const imageMap = {
-  "/images/gojo-front.png": join(assetsDir, "gojo-front.png"),
-  "/images/gojo-back.png": join(assetsDir, "gojo-back.png"),
-  "/images/gojo-front-card.jpg": join(assetsDir, "gojo-front-card.jpg"),
-  "/images/gojo-back-card.jpg": join(assetsDir, "gojo-back-card.jpg"),
+  "/images/gojo-front.jpg": join(assetsDir, "gojo-front.jpg"),
+  "/images/gojo-back.jpg": join(assetsDir, "gojo-back.jpg"),
   "/images/naruto-front.jpg": join(assetsDir, "naruto-front.jpg"),
   "/images/naruto-back.jpg": join(assetsDir, "naruto-back.jpg"),
-  "/images/luffy-front.png": join(assetsDir, "luffy-front.png"),
-  "/images/luffy-back.png": join(assetsDir, "luffy-back.png"),
-  "/images/luffy-front-card.jpg": join(assetsDir, "luffy-front-card.jpg"),
-  "/images/luffy-back-card.jpg": join(assetsDir, "luffy-back-card.jpg"),
+  "/images/luffy-front.jpg": join(assetsDir, "luffy-front.jpg"),
+  "/images/luffy-back.jpg": join(assetsDir, "luffy-back.jpg"),
   "/images/all-cards.jpg": join(assetsDir, "all-cards.jpg"),
   "/images/naruto-back-alt.jpg": join(assetsDir, "naruto-back-alt.jpg")
 };
