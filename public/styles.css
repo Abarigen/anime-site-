@@ -275,9 +275,24 @@ h3 {
   padding: 24px;
 }
 
-.product-info p:not(.product-code) {
+.product-info p:not(.product-code):not(.product-price) {
   color: var(--muted);
   line-height: 1.55;
+}
+
+.product-price {
+  display: inline-flex;
+  align-items: center;
+  margin: 8px 0 22px;
+  padding: 10px 16px;
+  border: 2px solid var(--ink);
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 28px;
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: 0;
+  box-shadow: 5px 5px 0 var(--ink);
 }
 
 .select-card {
