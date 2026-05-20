@@ -590,10 +590,18 @@ h1 {
 }
 
 .remove {
-  border: 0;
-  background: transparent;
+  min-height: 42px;
+  border: 1px solid #c8c8c8;
+  border-radius: 8px;
+  background: var(--white);
+  padding: 0 14px;
   color: var(--danger);
   font-weight: 850;
+}
+
+.remove:hover {
+  border-color: var(--danger);
+  background: #fff4f4;
 }
 
 .summary,

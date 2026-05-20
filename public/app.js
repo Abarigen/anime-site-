@@ -87,7 +87,7 @@ function getCartRows() {
 
 function addToCart(productId, quantity = 1, replace = false) {
   const product = productById(productId);
-  if (!product) return;
+  if (!product) return false;
   const existing = state.cart.find((item) => item.productId === productId);
   if (existing) {
     existing.quantity = replace ? quantity : existing.quantity + quantity;
@@ -96,14 +96,14 @@ function addToCart(productId, quantity = 1, replace = false) {
   }
   saveCart();
   notify("Товар додано до вашого кошика");
+  return true;
 }
 
 function addBundleToCart(productId, replace = false) {
   const product = productById(productId);
   const selectedPromo = document.querySelector("[data-promo-quantity].selected");
   if (!product || !selectedPromo) {
-    addToCart(productId, selectedQuantity(document, productId), replace);
-    return;
+    return addToCart(productId, selectedQuantity(document, productId), replace);
   }
 
   const promoId = selectedPromo.dataset.promoId;
@@ -115,7 +115,7 @@ function addBundleToCart(productId, replace = false) {
   ];
   if (chosenProducts.some((id) => !id)) {
     notify("Оберіть усі картки для акційного набору");
-    return;
+    return false;
   }
   const bundleKey = `${productId}:${promoId}:${chosenProducts.join(",")}`;
   const bundleItem = {
@@ -136,6 +136,7 @@ function addBundleToCart(productId, replace = false) {
 
   saveCart();
   notify("Набір додано до вашого кошика");
+  return true;
 }
 
 function quantityControl(productId, value = 1, compact = false, cartKey = "") {
@@ -353,7 +354,7 @@ function renderCartPage() {
       <aside class="summary">
         <span>Разом</span>
         <strong>${money.format(total)} UAH</strong>
-        <button class="button dark wide" type="button" data-go-checkout ${rows.length ? "" : "disabled"}>Оформити замовлення</button>
+        <button class="button dark wide" type="button" data-go-checkout ${rows.length ? "" : "disabled"}>Підтвердити замовлення</button>
         <button class="button outline wide" type="button" data-go-catalog>Продовжити покупки</button>
       </aside>
     </section>
@@ -393,7 +394,7 @@ function renderCartItem(row) {
             <p>Сума набору: ${money.format(row.product.price * row.quantity)} UAH</p>
           `}
         </div>
-        <button class="remove" type="button" data-remove="${row.bundleKey}">Прибрати</button>
+        <button class="remove" type="button" data-remove="${row.bundleKey}">Видалити з кошика</button>
       </article>
     `;
   }
@@ -406,7 +407,7 @@ function renderCartItem(row) {
         <p>${money.format(row.product.price)} x ${row.quantity}</p>
         ${quantityControl(row.product.id, row.quantity, true, row.productId)}
       </div>
-      <button class="remove" type="button" data-remove="${row.product.id}">Прибрати</button>
+      <button class="remove" type="button" data-remove="${row.product.id}">Видалити з кошика</button>
     </article>
   `;
 }
@@ -420,8 +421,8 @@ function renderCheckoutPage() {
 
   app.innerHTML = `
     <section class="page-head">
-      <p class="tiny">Оформлення</p>
-      <h1>Контактні дані</h1>
+      <p class="tiny">Доставка</p>
+      <h1>Дані для відправки</h1>
     </section>
     <section class="checkout-page">
       <form class="checkout-form" id="checkout-form">
@@ -672,12 +673,13 @@ document.addEventListener("click", async (event) => {
 
   const buy = event.target.closest("[data-buy]");
   if (buy) {
+    let added = false;
     if (document.querySelector(".product-page")) {
-      addBundleToCart(buy.dataset.buy, true);
+      added = addBundleToCart(buy.dataset.buy, true);
     } else {
-      addToCart(buy.dataset.buy, selectedQuantity(document, buy.dataset.buy), true);
+      added = addToCart(buy.dataset.buy, selectedQuantity(document, buy.dataset.buy), true);
     }
-    navigate("/checkout");
+    if (added) navigate("/cart");
     return;
   }
 
