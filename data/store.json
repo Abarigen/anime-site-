@@ -1,0 +1,66 @@
+{
+  "categories": [
+    {
+      "id": "anime",
+      "name": "Аніме картки"
+    },
+    {
+      "id": "movies",
+      "name": "Кіно та серіали"
+    }
+  ],
+  "products": [
+    {
+      "id": "naruto",
+      "categoryId": "anime",
+      "name": "Картка Naruto Uzumaki",
+      "price": 149,
+      "oldPrice": 0,
+      "image": "/assets/naruto-front.svg",
+      "description": "Колекційна PVC-картка з чистим помаранчево-чорним дизайном і кодом KONOHA.",
+      "stock": 24,
+      "active": true
+    },
+    {
+      "id": "gojo",
+      "categoryId": "anime",
+      "name": "Картка Satoru Gojo",
+      "price": 149,
+      "oldPrice": 0,
+      "image": "/assets/gojo-front.svg",
+      "description": "Контрастна картка у холодній естетиці з акцентом на символіку очей.",
+      "stock": 18,
+      "active": true
+    },
+    {
+      "id": "luffy",
+      "categoryId": "anime",
+      "name": "Картка Monkey D. Luffy",
+      "price": 149,
+      "oldPrice": 0,
+      "image": "/assets/luffy-front.svg",
+      "description": "Свіжий дизайн для фанатів пригод, піратських знаків і виразної графіки.",
+      "stock": 20,
+      "active": true
+    }
+  ],
+  "promotions": [
+    {
+      "id": "single",
+      "title": "Придбати одну картку",
+      "buy": 1,
+      "gift": 0,
+      "discount": 0,
+      "popular": false
+    },
+    {
+      "id": "buy2gift1",
+      "title": "Придбай 2, отримай 1 в подарунок",
+      "buy": 2,
+      "gift": 1,
+      "discount": 33,
+      "popular": true
+    }
+  ],
+  "orders": []
+}
