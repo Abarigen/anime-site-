@@ -207,8 +207,7 @@ function renderProductCard(product) {
         <p>${categoryName(product.categoryId)}</p>
         <strong>${money.format(product.price)} UAH</strong>
         <div class="card-actions">
-          ${quantityControl(product.id, 1, true)}
-          <button class="button dark" type="button" data-add="${product.id}">Додати</button>
+          <button class="button dark wide" type="button" data-open-product="${product.id}">Купити</button>
         </div>
       </div>
     </article>
@@ -658,6 +657,12 @@ document.addEventListener("click", async (event) => {
     const promoData = state.store.promotions.find((entry) => entry.id === promo.dataset.promoId);
     if (builder && product && promoData) builder.innerHTML = renderBundleBuilder(product, promoData);
     if (summary && promoData) summary.innerHTML = renderBundleSummary(promoData);
+    return;
+  }
+
+  const openProduct = event.target.closest("[data-open-product]");
+  if (openProduct) {
+    navigate(`/product/${openProduct.dataset.openProduct}`);
     return;
   }
 
