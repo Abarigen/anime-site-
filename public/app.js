@@ -45,6 +45,14 @@ function notify(message) {
   notify.timer = setTimeout(() => toast.classList.remove("visible"), 3200);
 }
 
+function trackTikTokPage() {
+  window.ttq?.page?.();
+}
+
+function trackTikTokEvent(name, payload = {}) {
+  window.ttq?.track?.(name, payload);
+}
+
 function showOrderModal(result) {
   orderModalText.textContent = result.message || "Замовлення прийнято в роботу. Наш менеджер найближчим часом зв'яжеться для підтвердження.";
   const numericOrderId = String(result.orderId || "").replace(/\D/g, "");
@@ -55,6 +63,7 @@ function showOrderModal(result) {
 function navigate(path) {
   history.pushState({}, "", path);
   renderRoute();
+  trackTikTokPage();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -96,6 +105,14 @@ function addToCart(productId, quantity = 1, replace = false) {
   }
   saveCart();
   notify("Товар додано до вашого кошика");
+  trackTikTokEvent("AddToCart", {
+    content_id: product.id,
+    content_name: product.name,
+    content_type: "product",
+    quantity,
+    value: product.price * quantity,
+    currency: "UAH"
+  });
   return true;
 }
 
@@ -136,6 +153,14 @@ function addBundleToCart(productId, replace = false) {
 
   saveCart();
   notify("Набір додано до вашого кошика");
+  trackTikTokEvent("AddToCart", {
+    content_id: bundleKey,
+    content_name: "Акційний набір",
+    content_type: "product_group",
+    quantity: paidQuantity + giftQuantity,
+    value: product.price * paidQuantity,
+    currency: "UAH"
+  });
   return true;
 }
 
@@ -696,7 +721,20 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
-  if (event.target.closest("[data-go-checkout]")) navigate("/checkout");
+  if (event.target.closest("[data-go-checkout]")) {
+    const rows = getCartRows();
+    trackTikTokEvent("InitiateCheckout", {
+      contents: rows.map((row) => ({
+        content_id: row.bundleKey || row.product.id,
+        content_name: row.promoId ? "Акційний набір" : row.product.name,
+        quantity: row.quantity + (row.giftQuantity || 0)
+      })),
+      value: rows.reduce((sum, row) => sum + row.product.price * row.quantity, 0),
+      currency: "UAH"
+    });
+    navigate("/checkout");
+    return;
+  }
   if (event.target.closest("[data-go-catalog]")) navigate("/catalog");
   if (event.target.closest("[data-modal-catalog]")) {
     orderModal.classList.add("hidden");
@@ -779,6 +817,7 @@ document.addEventListener("submit", async (event) => {
     const status = checkout.querySelector("#checkout-status");
     status.textContent = "Оформлюємо замовлення...";
     try {
+      const orderValue = getCartRows().reduce((sum, row) => sum + row.product.price * row.quantity, 0);
       const result = await api("/api/orders", {
         method: "POST",
         body: JSON.stringify({ ...Object.fromEntries(new FormData(checkout).entries()), items: state.cart })
@@ -786,6 +825,11 @@ document.addEventListener("submit", async (event) => {
       state.cart = [];
       saveCart();
       status.textContent = result.message;
+      trackTikTokEvent("PlaceAnOrder", {
+        order_id: String(result.orderId || "").replace(/\D/g, ""),
+        value: orderValue,
+        currency: "UAH"
+      });
       showOrderModal(result);
     } catch (error) {
       status.textContent = error.message;
@@ -850,7 +894,10 @@ document.addEventListener("submit", async (event) => {
   }
 });
 
-window.addEventListener("popstate", renderRoute);
+window.addEventListener("popstate", () => {
+  renderRoute();
+  trackTikTokPage();
+});
 
 async function loadAdminStore() {
   state.store = normalizeStore(await api("/api/admin/store"));
